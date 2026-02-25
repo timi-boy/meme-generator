@@ -1,0 +1,6 @@
+{
+  "buildCommand": "mkdir -p dist && cp -r static/* dist/",
+  "outputDirectory": "dist",
+  "framework": null,
+  "installCommand": "echo 'No install'"
+}

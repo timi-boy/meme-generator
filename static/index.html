@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meme Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <span class="header-accent">◆</span>
+      <h1>Meme Generator</h1>
+      <span class="header-accent">◆</span>
+    </header>
+    <main class="app-main">
+      <section class="panel photo-panel">
+        <h2>1. Choose photo</h2>
+        <p class="panel-hint">Pick one from common meme photos</p>
+        <div id="common-photos" class="common-photos"></div>
+      </section>
+
+      <section class="panel text-panel">
+        <h2>2. Text</h2>
+        <p class="panel-hint">Type your text (long text will wrap on the meme) or pick a joke by topic</p>
+        <div class="text-input-wrap">
+          <input type="text" id="text-input" placeholder="Your text..." />
+        </div>
+        <div class="text-color-row">
+          <label class="text-color-label">Text color:</label>
+          <input type="color" id="text-color" value="#ffffff" title="Text color" />
+          <span class="text-color-presets">
+            <button type="button" class="color-swatch" data-color="#ffffff" title="White"></button>
+            <button type="button" class="color-swatch" data-color="#000000" title="Black"></button>
+            <button type="button" class="color-swatch" data-color="#ffff00" title="Yellow"></button>
+            <button type="button" class="color-swatch" data-color="#ff0000" title="Red"></button>
+            <button type="button" class="color-swatch" data-color="#00ff00" title="Green"></button>
+            <button type="button" class="color-swatch" data-color="#00ffff" title="Cyan"></button>
+          </span>
+        </div>
+        <div class="topic-buttons">
+          <button type="button" class="btn-topic" data-topic="shuffle"><span class="btn-topic-icon">🎲</span> Shuffle</button>
+          <button type="button" class="btn-topic" data-topic="trump"><span class="btn-topic-icon">🍊</span> Trump</button>
+          <button type="button" class="btn-topic" data-topic="manUnited"><span class="btn-topic-icon">🔴</span> Man United</button>
+          <button type="button" class="btn-topic" data-topic="dadJoke"><span class="btn-topic-icon">😂</span> Dad Joke</button>
+          <button type="button" class="btn-topic" data-topic="programmer"><span class="btn-topic-icon">💻</span> Programmer</button>
+          <button type="button" class="btn-topic" data-topic="coffee"><span class="btn-topic-icon">☕</span> Coffee</button>
+        </div>
+      </section>
+
+      <section class="panel previews">
+        <h2>3. Placement preview</h2>
+        <p class="panel-hint">Pick Top, Middle or Bottom — preview below</p>
+        <div class="placement-layout">
+          <div class="placement-options" id="placement-options"></div>
+          <div class="placement-preview-large-wrap">
+            <canvas id="placement-preview-large" class="placement-preview-large"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel share">
+        <h2>4. Share</h2>
+        <div class="share-buttons">
+          <button type="button" id="btn-download">Download</button>
+          <div class="share-dropdown-wrap">
+            <button type="button" id="btn-share" aria-haspopup="true" aria-expanded="false">Share ▾</button>
+            <div id="share-dropdown" class="share-dropdown" hidden>
+              <button type="button" class="share-dropdown-item" data-action="copy-image">Copy image</button>
+              <button type="button" class="share-dropdown-item" data-action="copy-link">Copy link</button>
+              <button type="button" class="share-dropdown-item" data-action="download">Download</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
