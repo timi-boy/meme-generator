@@ -25,7 +25,7 @@
     { id: 'bihw', name: 'Honest Work', imageUrl: MEMEGEN_BASE + '/bihw.jpg' },
     { id: 'noidea', name: 'No Idea', imageUrl: MEMEGEN_BASE + '/noidea.jpg' },
     { id: 'spongebob', name: 'Mocking SpongeBob', imageUrl: MEMEGEN_BASE + '/spongebob.jpg' },
-    { id: 'woman-cat', name: 'Woman Yelling at Cat', imageUrl: MEMEGEN_BASE + '/woman-cat.jpg' },
+    { id: 'stonks', name: 'Stonks', imageUrl: MEMEGEN_BASE + '/stonks.jpg' },
     { id: 'fine', name: 'This is Fine', imageUrl: MEMEGEN_BASE + '/fine.jpg' },
   ];
 
@@ -118,7 +118,7 @@
 
     if (state.imageEl && state.imageEl.complete && state.imageEl.naturalWidth) {
       var img = state.imageEl;
-      var scale = Math.max(width / img.naturalWidth, height / img.naturalHeight);
+      var scale = Math.min(width / img.naturalWidth, height / img.naturalHeight);
       var sw = img.naturalWidth * scale;
       var sh = img.naturalHeight * scale;
       ctx.drawImage(img, (width - sw) / 2, (height - sh) / 2, sw, sh);
@@ -159,7 +159,7 @@
       return;
     }
     var img = new Image();
-    img.crossOrigin = 'anonymous';
+    img.crossOrigin = url.indexOf('blob:') === 0 ? null : 'anonymous';
     img.onload = function () {
       state.imageEl = img;
       renderPreviews();
@@ -173,12 +173,21 @@
     img.src = url;
   }
 
+  function setImageFromFile(file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    setImageFromUrl(URL.createObjectURL(file));
+  }
+
   function updatePhotoSelection() {
-    var items = document.querySelectorAll('.common-photo');
+    var items = document.querySelectorAll('.common-photo:not(.upload-photo-box)');
     items.forEach(function (el) {
       var url = el.dataset.imageUrl;
       el.classList.toggle('selected', url === state.imageUrl);
     });
+    var uploadBox = document.getElementById('upload-photo-box');
+    if (uploadBox) {
+      uploadBox.classList.toggle('selected', state.imageUrl && state.imageUrl.indexOf('blob:') === 0);
+    }
   }
 
   function getSelectedPreset() {
@@ -190,6 +199,7 @@
 
   function renderCommonPhotos() {
     var container = document.getElementById('common-photos');
+    var fileInput = document.getElementById('photo-upload-input');
     container.innerHTML = '';
     COMMON_PHOTOS.forEach(function (photo) {
       var wrap = document.createElement('button');
@@ -211,6 +221,23 @@
       });
       container.appendChild(wrap);
     });
+    var uploadBox = document.createElement('button');
+    uploadBox.type = 'button';
+    uploadBox.id = 'upload-photo-box';
+    uploadBox.className = 'common-photo upload-photo-box';
+    uploadBox.title = 'Upload your own image';
+    uploadBox.innerHTML = '<span class="upload-photo-icon">📤</span><span class="common-photo-name">Upload</span>';
+    uploadBox.addEventListener('click', function () {
+      if (fileInput) fileInput.click();
+    });
+    container.appendChild(uploadBox);
+    if (fileInput) {
+      fileInput.onchange = function () {
+        var file = fileInput.files && fileInput.files[0];
+        setImageFromFile(file);
+        fileInput.value = '';
+      };
+    }
   }
 
   var PLACEMENT_ICONS = { top: '⬆️', middle: '🔶', bottom: '⬇️' };
@@ -395,4 +422,7 @@
   renderCommonPhotos();
   bindUi();
   renderPreviews();
+  if (COMMON_PHOTOS.length > 0) {
+    setImageFromUrl(COMMON_PHOTOS[0].imageUrl);
+  }
 })();

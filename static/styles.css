@@ -141,6 +141,21 @@ body {
   display: block;
 }
 
+.upload-photo-box {
+  min-height: 100px;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.upload-photo-box .upload-photo-icon {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.upload-photo-box .common-photo-name {
+  margin-top: 0.25rem;
+}
+
 .common-photo-name {
   font-size: 0.7rem;
   font-weight: 600;
